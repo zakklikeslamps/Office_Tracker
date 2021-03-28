@@ -79,7 +79,7 @@ const addQuery = () => {
 }
 
 const addDept = () => {
-    inqirer.prompt({
+    inquirer.prompt({
         type: 'input',
         message: 'Please enter a new Department.',
         name: 'newDept'
@@ -208,7 +208,7 @@ const viewQuery = () => {
 
 
 const viewDeptSearch = () => {
-    const deptSql = `SELECT dept.id AS id, dept.name AS dept FROM depts`;
+    const deptSql = `SELECT depts.id AS id, depts.name AS dept FROM depts`;
     connection.query(deptSql, (err, res) => {
         if (err) throw err;
         console.table(res);
@@ -218,7 +218,7 @@ const viewDeptSearch = () => {
 };
 
 const viewRoleSearch = () => {
-    const roleSql = `SELECT role.id AS id, role.title AS title, role.salary AS salary, role.dept_id AS dept_id FROM roles`;
+    const roleSql = `SELECT roles.id AS id, roles.title AS title, roles.salary AS salary, roles.dept_id AS dept_id FROM roles`;
     connection.query(roleSql, (err, res) => {
         if (err) throw err;
         console.table(res);
