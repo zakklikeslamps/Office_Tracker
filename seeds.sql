@@ -1,4 +1,6 @@
-INSERT INTO depts (dept_name)
+USE office_db;
+
+INSERT INTO depts (name)
 VALUES ("Sales"), ("Product Dev."), ("Management"), ("Legal");
 
 INSERT INTO roles (title, salary, dept_id)
