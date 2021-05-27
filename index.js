@@ -92,7 +92,7 @@ const addDepartment = () => {
             type: "list",
             choices: [
               "Add another department",
-              "Exit to the main screen.",
+              "Exit.",
             ],
             message: "What do you want to do next?",
             name: "choice",
@@ -101,44 +101,52 @@ const addDepartment = () => {
             if (choice === "Add another department") {
               addDepartment();
             } else {
-              mainMenu();
+              addQuery();
             }
           });
       });
     });
 };
 
+//////ISSUE HERE
 const addRole = () => {
   inquirer
     .prompt({
       type: "input",
       message: "Please enter your new role.",
       name: "newRole",
+    },
+
+    {
+      type: "input",
+      message: "Please enter salary.",
+      name: "newSalary",
+    },
+
+    {
+      type: "input",
+      message: "Please enter Department ID.",
+      name: "newID",
     })
+    //removed prompt ^
     .then((answer) => {
       const title = `INSERT INTO role VALUES ?`;
       connection.query(title, answer.newTitle, (err, res) => {
         if (err) throw err;
         console.table(res);
       });
+
+      //removed prompt ^
       inquirer
-        .prompt({
-          type: "input",
-          message: "Please enter salary.",
-          name: "newSalary",
-        })
         .then((answer) => {
           const salary = `INSERT INTO role VALUES ?`;
           connection.query(salary, answer.newSalary, (err, res) => {
             if (err) throw err;
             console.table(res);
           });
+
+          //removed prompt ^
           inquirer
-            .prompt({
-              type: "input",
-              message: "Please enter Department ID.",
-              name: "newID",
-            })
             .then((answer) => {
               const newDepartmentId = `INSERT INTO role VALUES ?`;
               connection.query(newDepartmentId, answer.newID, (err, res) => {
@@ -182,10 +190,32 @@ const addEmployee = () => {
       connection.query(newEmployee, answer, (err, res) => {
         if (err) throw err;
         console.table(res);
+
+        inquirer
+          .prompt({
+            type: "list",
+            choices: [
+              "Add another employee",
+              "Exit.",
+            ],
+            message: "What do you want to do next?",
+            name: "choice",
+          })
+          .then(({ choice }) => {
+            if (choice === "Add another employee") {
+              addDepartment();
+            } else {
+              addQuery();
+            }
+          });
+
       });
+
     });
+  
 };
 
+//'View'
 const viewQuery = () => {
   inquirer
     .prompt({
@@ -229,7 +259,7 @@ const viewRoleSearch = () => {
     if (err) throw err;
     console.table(res);
 
-    mainMenu();
+    viewQuery();
   });
 };
 
@@ -239,10 +269,11 @@ const viewEmployeeSearch = () => {
     if (err) throw err;
     console.table(res);
 
-    mainMenu();
+    viewQuery();
   });
 };
 
+//'Update'
 const updateQuery = () => {
   inquirer
     .prompt({
@@ -266,6 +297,7 @@ const updateQuery = () => {
     });
 };
 
+//////ISSUE HERE
 const updateSql = () => {
   inquirer
     .prompt({
@@ -293,6 +325,7 @@ const updateSql = () => {
     });
 };
 
+//'Delete'
 const deleteQuery = () => {
   inquirer
     .prompt({
@@ -320,6 +353,7 @@ const deleteQuery = () => {
     });
 };
 
+//////ISSUE HERE
 const delEmployee = () => {
   let employeeSql = `SELECT * FROM employee`;
   connection.query(employeeSql, (err, res) => {
@@ -356,6 +390,8 @@ const delEmployee = () => {
         connection.query(delEmployeeSql, [employeeId], (err, res) => {
           if (err) throw err;
           console.table(res);
+
+          viewEmployeeSearch();
         });
       });
   });
